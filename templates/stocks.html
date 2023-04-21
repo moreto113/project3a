@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %}{% endblock %}Stock Data Visualizer</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+    <body>
+        <hr>
+        <div class="content">
+            <!-- Section for Alerts -->
+            {% for message in get_flashed_messages() %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+            <!-- Section for Content -->
+            {% block content %}
+                <!-- White Block -->
+                <div class="content-block">
+                    <!-- Title -->
+                    <h1 class="content-block-title">Stock Data Visualizer</h1>
+    
+                    <!-- Forms -->
+                    <form method="POST">
+                        <!-- Choose Symbol -->
+                        <label class="formLabel" for="symbol">Choose Symbol:</label>
+                        <select class="select_input" id="symbol" name="symbol">
+                            <option value="">Select a Symbol</option>
+                            <!-- Loop through sp500_symbols and create options -->
+                            {% for symbol in sp500_symbols %}
+                                <option value="{{ symbol }}">{{ symbol }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        
+                        <!-- Choose Chart Type -->
+                        <label class="formLabel" for="chart_type">Choose Chart Type:</label>
+                        <select class="select_input" id="chart_type" name="chart_type">
+                            <option value="">Select a Chart Type</option>
+                            <option value="Bar">1. Bar</option>
+                            <option value="Line">2. Line</option>
+                        </select>
+                        <br>
+                        
+                        <!-- Choose Time Series -->        
+                        <label class="formLabel" for="time_series">Choose Time Series:</label>
+                        <select class="select_input" id="time_series" name="time_series">
+                            <option value="">Select a Time Series</option>
+                            <option value="TIME_SERIES_INTRADAY">1. Intraday</option>
+                            <option value="TIME_SERIES_DAILY_ADJUSTED">2. Daily</option>
+                            <option value="TIME_SERIES_WEEKLY">3. Weekly</option>
+                            <option value="TIME_SERIES_MONTHLY">4. Monthly</option>
+                        </select>
+                        <br>
+                        <!-- Choose Start Date -->
+                        <label class="formLabel" for="start_date">Start Date:</label>
+                        <input type="date" class="date_input" name="start_date" id="start_date">
+                        <br>
+                        <!-- Choose End Date -->                    
+                        <label class="formLabel" for="end_date">End Date:</label>
+                        <input type="date" class="date_input" name="end_date" id="end_date">
+                        <br>
+                        <!-- Submit Button -->
+                        <button type="submit">Submit</button>
+                    </form>
+                    <!-- Section for Graph -->
+                    <div id="graph">
+                        <!-- Display the graph using the SVG representation -->
+                        {{ graph_svg|safe }}
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+        <script src="" async defer></script>
+    </body>
+</html>
